@@ -9,39 +9,40 @@
  */
 
 import { view } from '@risingstack/react-easy-state';
-import React from 'react';
-import {
-	SafeAreaView,
-	StyleSheet,
-	ScrollView,
-	View,
-	StatusBar,
-	Text,
-	Button,
-} from 'react-native';
+import React, { useEffect } from 'react';
+import { SafeAreaView, StyleSheet, StatusBar, View, Text } from 'react-native';
+import { RTCView } from 'react-native-webrtc';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
-import { Store } from './Store';
+import { RootContextProvider, useRootContext } from './components/RootContext';
 
-// console.log(`V8 version is ${(global as any)?._v8runtime()?.version}`);
-
-const store = new Store();
+const Content = view(() => {
+	const root = useRootContext();
+	const { offair } = root;
+	useEffect(() => {
+		root
+			.connect()
+			.then(() => console.log('connected'))
+			.catch(console.log);
+	}, []);
+	return (
+		<View>
+			{offair.connected ? (
+				<RTCView streamURL={offair.stream.toURL()} />
+			) : (
+				<Text>NOT CONNECTED</Text>
+			)}
+		</View>
+	);
+});
 
 const App = view(() => {
 	return (
-		<>
+		<RootContextProvider>
 			<StatusBar barStyle="dark-content" />
 			<SafeAreaView>
-				<ScrollView
-					contentInsetAdjustmentBehavior="automatic"
-					style={styles.scrollView}
-				>
-					<View style={styles.body}>
-						<Text>{store.test ? 'YES' : 'NO'}</Text>
-						<Button onPress={() => store.setTest(!store.test)} title="Change" />
-					</View>
-				</ScrollView>
+				<Content />
 			</SafeAreaView>
-		</>
+		</RootContextProvider>
 	);
 });
 
