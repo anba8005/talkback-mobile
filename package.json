@@ -12,13 +12,17 @@
 		"janus-gateway-js": "anba8005/janus-gateway-js",
 		"react": "17.0.1",
 		"react-native": "0.64.0-rc.2",
-		"react-native-webrtc": "^1.87.2",
+		"react-native-elements": "^3.1.0",
+		"react-native-incall-manager": "^3.3.0",
+		"react-native-vector-icons": "^7.1.0",
+		"react-native-webrtc": "anba8005/react-native-webrtc",
 		"strongly-typed-events": "^2.0.6"
 	},
 	"devDependencies": {
 		"@babel/core": "^7.12.9",
 		"@babel/runtime": "^7.12.5",
 		"@react-native-community/eslint-config": "^2.0.0",
+		"@types/lodash": "^4.14.167",
 		"@types/react-native": "^0.63.45",
 		"@types/react-native-webrtc": "^1.75.2",
 		"@typescript-eslint/eslint-plugin": "^4.12.0",

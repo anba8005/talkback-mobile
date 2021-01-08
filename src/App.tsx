@@ -1,63 +1,47 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * Generated with the TypeScript template
- * https://github.com/react-native-community/react-native-template-typescript
- *
- * @format
- */
-
 import { view } from '@risingstack/react-easy-state';
-import React, { useEffect } from 'react';
-import { SafeAreaView, StyleSheet, StatusBar, View, Text } from 'react-native';
-import { RTCView } from 'react-native-webrtc';
-import { Colors } from 'react-native/Libraries/NewAppScreen';
+import React, { useEffect, useState } from 'react';
+import { BackHandler } from 'react-native';
+import { ThemeProvider } from 'react-native-elements';
+import Loading from './components/Loading';
+import Root from './components/Root';
+import Error from './components/Error';
 import { RootContextProvider, useRootContext } from './components/RootContext';
+import Logger from './utils/Logger';
 
 const Content = view(() => {
 	const root = useRootContext();
-	const { offair } = root;
+	const [connected, setConnected] = useState<boolean | null>(null);
+	//
 	useEffect(() => {
 		root
 			.connect()
-			.then(() => console.log('connected'))
-			.catch(console.log);
-	}, []);
-	return (
-		<View>
-			{offair.connected ? (
-				<RTCView streamURL={offair.stream.toURL()} />
-			) : (
-				<Text>NOT CONNECTED</Text>
-			)}
-		</View>
-	);
+			.then(() => setConnected(true))
+			.catch(() => setConnected(false));
+	}, [root]);
+	//
+	if (connected === null) {
+		return <Loading />;
+	} else if (!connected) {
+		return <Error />;
+	} else {
+		return <Root />;
+	}
+});
+
+Logger.initialize();
+
+BackHandler.addEventListener('hardwareBackPress', function () {
+	return true;
 });
 
 const App = view(() => {
 	return (
-		<RootContextProvider>
-			<StatusBar barStyle="dark-content" />
-			<SafeAreaView>
+		<ThemeProvider>
+			<RootContextProvider>
 				<Content />
-			</SafeAreaView>
-		</RootContextProvider>
+			</RootContextProvider>
+		</ThemeProvider>
 	);
-});
-
-const styles = StyleSheet.create({
-	scrollView: {
-		backgroundColor: Colors.lighter,
-	},
-	heading: {
-		fontSize: 30,
-		fontWeight: '700',
-		color: Colors.black,
-	},
-	body: {
-		backgroundColor: Colors.white,
-	},
 });
 
 export default App;
