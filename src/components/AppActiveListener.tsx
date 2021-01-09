@@ -8,10 +8,11 @@ export default view(function AppActiveListener() {
 	//
 	const handleAppStateChange = useCallback(
 		(nextAppState: AppStateStatus) => {
-			if (nextAppState === 'background') {
-				offair.updateVisible(false);
-			} else {
+			console.log('state is ' + nextAppState);
+			if (nextAppState === 'active') {
 				offair.updateVisible(true);
+			} else {
+				offair.updateVisible(false);
 			}
 		},
 		[offair],
