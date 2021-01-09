@@ -1,34 +1,43 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { view } from '@risingstack/react-easy-state';
 import { useRootContext } from './RootContext';
 import Fab from './Fab';
 
-const OffairMuteFab = view(function OffairMuteFab() {
+export const OffairMuteFab = view(function OffairMuteFab() {
 	const { offair } = useRootContext();
 	return (
 		<Fab
 			icon={offair.muted ? 'volume-off' : 'volume-up'}
 			type="material"
-			positionH="left"
+			positionH="center"
 			positionV="bottom"
 			onPress={() => offair.setMuted(!offair.muted)}
 		/>
 	);
 });
 
-export default view(function Controls() {
+export const SettingsFab = memo(function SettingsFab() {
 	const { settings } = useRootContext();
 	return (
-		<>
-			{settings.offair && <OffairMuteFab />}
-			<OffairMuteFab />
-			<Fab
-				icon="settings"
-				type="material"
-				positionH="right"
-				positionV="bottom"
-				onPress={() => settings.setDialogOpen(true)}
-			/>
-		</>
+		<Fab
+			icon="settings"
+			type="material"
+			positionH="right"
+			positionV="bottom"
+			onPress={() => settings.setDialogOpen(true)}
+		/>
+	);
+});
+
+export const DisconnectFab = memo(function DisconnectFab() {
+	const root = useRootContext();
+	return (
+		<Fab
+			icon="power-settings-new"
+			type="material"
+			positionH="left"
+			positionV="bottom"
+			onPress={() => root.disconnect().catch(console.error)}
+		/>
 	);
 });

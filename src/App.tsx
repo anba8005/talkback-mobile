@@ -1,30 +1,31 @@
 import { view } from '@risingstack/react-easy-state';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { BackHandler } from 'react-native';
 import { ThemeProvider } from 'react-native-elements';
-import Loading from './components/Loading';
 import Root from './components/Root';
 import Error from './components/Error';
 import { RootContextProvider, useRootContext } from './components/RootContext';
 import Logger from './utils/Logger';
+import Connect from './components/Connect';
+import { SettingsFab } from './components/Controls';
+
+// backgroundservice tik kai connected
+// incallmanager tik audio ? patikrinti !!
 
 const Content = view(() => {
 	const root = useRootContext();
-	const [connected, setConnected] = useState<boolean | null>(null);
 	//
-	useEffect(() => {
-		root
-			.connect()
-			.then(() => setConnected(true))
-			.catch(() => setConnected(false));
-	}, [root]);
+	const handleConnect = () => {
+		root.connect().catch(console.error);
+	};
 	//
+	const connected = root.isConnected();
 	if (connected === null) {
-		return <Loading />;
-	} else if (!connected) {
-		return <Error />;
-	} else {
+		return <Connect onPress={handleConnect} />;
+	} else if (connected) {
 		return <Root />;
+	} else {
+		return <Error />;
 	}
 });
 
@@ -39,6 +40,7 @@ const App = view(() => {
 		<ThemeProvider>
 			<RootContextProvider>
 				<Content />
+				<SettingsFab />
 			</RootContextProvider>
 		</ThemeProvider>
 	);

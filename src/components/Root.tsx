@@ -3,8 +3,9 @@ import { SafeAreaView, StyleSheet, View } from 'react-native';
 import React from 'react';
 import Offair from './Offair';
 import Intercom from './Intercom';
-import Controls from './Controls';
+import { DisconnectFab, OffairMuteFab } from './Controls';
 import Participants from './Participants';
+import { useRootContext } from './RootContext';
 
 const styles = StyleSheet.create({
 	safe: {
@@ -21,10 +22,12 @@ const styles = StyleSheet.create({
 });
 
 export default view(function Root() {
+	const { settings } = useRootContext();
 	return (
 		<SafeAreaView style={styles.safe}>
 			<View style={styles.content}>
-				<Controls />
+				{settings.offair && <OffairMuteFab />}
+				<DisconnectFab />
 				<Participants />
 				<Intercom />
 				<Offair />
