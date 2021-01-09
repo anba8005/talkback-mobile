@@ -6,6 +6,7 @@ import Intercom from './Intercom';
 import { DisconnectFab, OffairMuteFab } from './Controls';
 import Participants from './Participants';
 import { useRootContext } from './RootContext';
+import InCallManagerDispatcher from './InCallManagerDispatcher';
 
 const styles = StyleSheet.create({
 	safe: {
@@ -26,6 +27,8 @@ export default view(function Root() {
 	return (
 		<SafeAreaView style={styles.safe}>
 			<View style={styles.content}>
+				<InCallManagerDispatcher />
+				{/* <AppActiveListener /> */}
 				{settings.offair && <OffairMuteFab />}
 				<DisconnectFab />
 				<Participants />

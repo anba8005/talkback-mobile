@@ -68,6 +68,6 @@ export const RootContextProvider: FC = ({ children }) => {
 			<RootContext.Provider value={rootStore}>{children}</RootContext.Provider>
 		);
 	} else {
-		return <View />;
+		return null;
 	}
 };

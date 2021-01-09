@@ -1,12 +1,17 @@
 import { view } from '@risingstack/react-easy-state';
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { SafeAreaView, StyleSheet, View } from 'react-native';
 import { Theme, withTheme } from 'react-native-elements';
 import Fab from './Fab';
 
 const styles = StyleSheet.create({
+	safe: {
+		justifyContent: 'center',
+		flex: 1,
+		alignItems: 'center',
+	},
 	content: {
-		position: 'absolute',
+		position: 'relative',
 		top: 0,
 		right: 0,
 		width: '100%',
@@ -23,17 +28,19 @@ interface ConnectProps extends Theme<{}> {
 export default withTheme(
 	view(function Connect({ onPress }: ConnectProps) {
 		return (
-			<View style={styles.content} key="fullscreenView">
-				<Fab
-					icon="power-settings-new"
-					borderWidth={1}
-					size={200}
-					type="material"
-					positionH="center"
-					positionV="center"
-					onPress={onPress}
-				/>
-			</View>
+			<SafeAreaView style={styles.safe}>
+				<View style={styles.content} key="fullscreenView">
+					<Fab
+						icon="power-settings-new"
+						borderWidth={1}
+						size={200}
+						type="material"
+						positionH="center"
+						positionV="center"
+						onPress={onPress}
+					/>
+				</View>
+			</SafeAreaView>
 		);
 	}),
 );
