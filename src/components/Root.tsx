@@ -8,6 +8,8 @@ import Participants from './Participants';
 import { useRootContext } from './RootContext';
 import InCallManagerDispatcher from './InCallManagerDispatcher';
 import AppActiveListener from './AppActiveListener';
+import DeviceInfo from '../utils/DeviceInfo';
+import ForegroundServiceDispatcher from './ForegroundServiceDispatcher';
 
 const styles = StyleSheet.create({
 	safe: {
@@ -30,6 +32,7 @@ export default view(function Root() {
 			<View style={styles.content}>
 				<InCallManagerDispatcher />
 				<AppActiveListener />
+				{DeviceInfo.isAndroid() && <ForegroundServiceDispatcher />}
 				{settings.offair && <OffairMuteFab />}
 				<DisconnectFab />
 				<Participants />
