@@ -1,5 +1,5 @@
 import { view } from '@risingstack/react-easy-state';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { BackHandler } from 'react-native';
 import { ThemeProvider } from 'react-native-elements';
 import Root from './components/Root';
@@ -8,6 +8,8 @@ import { RootContextProvider, useRootContext } from './components/RootContext';
 import Logger from './utils/Logger';
 import Connect from './components/Connect';
 import { SettingsFab } from './components/Controls';
+import PermissionManager from './utils/PermissionManager';
+import { CodePushManager } from './utils/CodePushManager';
 
 // backgroundservice tik kai connected
 // incallmanager tik audio ? patikrinti !!
@@ -36,14 +38,26 @@ BackHandler.addEventListener('hardwareBackPress', function () {
 });
 
 const App = view(() => {
-	return (
-		<ThemeProvider>
-			<RootContextProvider>
-				<Content />
-				<SettingsFab />
-			</RootContextProvider>
-		</ThemeProvider>
-	);
+	const [init, setInit] = useState(false);
+	//
+	useEffect(() => {
+		PermissionManager.requestPermissions()
+			.then(() => CodePushManager.enableRestart())
+			.then(() => setInit(true));
+	});
+	//
+	if (init) {
+		return (
+			<ThemeProvider>
+				<RootContextProvider>
+					<Content />
+					<SettingsFab />
+				</RootContextProvider>
+			</ThemeProvider>
+		);
+	} else {
+		return null;
+	}
 });
 
 export default App;

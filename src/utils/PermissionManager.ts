@@ -1,10 +1,13 @@
 const permissions = require('react-native-webrtc').permissions;
 
-export class PermisionManager {
-	public static async requestPermissions() {
-		const result = await Promise.all([
-			permissions.request({ name: 'microphone' }),
-		]);
-		console.log(result);
-	}
+async function requestPermissions() {
+	const result = await Promise.all([
+		permissions.request({ name: 'microphone' }),
+	]);
+	console.log('requested permissions');
+	console.log(result);
 }
+
+export default {
+	requestPermissions,
+};

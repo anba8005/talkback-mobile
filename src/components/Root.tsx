@@ -7,6 +7,7 @@ import { DisconnectFab, OffairMuteFab } from './Controls';
 import Participants from './Participants';
 import { useRootContext } from './RootContext';
 import InCallManagerDispatcher from './InCallManagerDispatcher';
+import AppActiveListener from './AppActiveListener';
 
 const styles = StyleSheet.create({
 	safe: {
@@ -28,7 +29,7 @@ export default view(function Root() {
 		<SafeAreaView style={styles.safe}>
 			<View style={styles.content}>
 				<InCallManagerDispatcher />
-				{/* <AppActiveListener /> */}
+				<AppActiveListener />
 				{settings.offair && <OffairMuteFab />}
 				<DisconnectFab />
 				<Participants />

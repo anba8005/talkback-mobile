@@ -5,7 +5,6 @@ import React, {
 	useEffect,
 	useState,
 } from 'react';
-import { View } from 'react-native';
 import { IntercomStore } from '../common/stores/IntercomStore';
 import { OffairStore } from '../common/stores/OffairStore';
 import { SettingsStore } from '../common/stores/SettingsStore';
