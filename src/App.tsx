@@ -58,7 +58,7 @@ BackHandler.addEventListener('hardwareBackPress', function () {
 	return true;
 });
 
-const App = view(() => {
+const App = () => {
 	const [init, setInit] = useState(false);
 	//
 	useEffect(() => {
@@ -80,6 +80,6 @@ const App = view(() => {
 	} else {
 		return null;
 	}
-});
+};
 
 export default App;
