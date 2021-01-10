@@ -15,6 +15,7 @@
 		"analyze": "react-native-bundle-visualizer"
 	},
 	"dependencies": {
+		"@react-native-async-storage/async-storage": "^1.13.2",
 		"@risingstack/react-easy-state": "^6.3.0",
 		"appcenter": "4.0.2",
 		"appcenter-analytics": "4.0.2",

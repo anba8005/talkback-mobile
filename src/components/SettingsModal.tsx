@@ -85,7 +85,10 @@ const SettingsContent = view(function SettingsContent() {
 				.disconnect()
 				.then(() => {
 					setTimeout(() => {
-						root.connect().catch(console.error);
+						root
+							.hydrate()
+							.then(() => root.connect())
+							.catch(console.error);
 					}, 1000);
 				})
 				.catch(console.error);
