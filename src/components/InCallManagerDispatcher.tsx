@@ -1,19 +1,18 @@
 import { view } from '@risingstack/react-easy-state';
 import { useRootContext } from './RootContext';
 import InCallManager from '../utils/InCallManager';
-import { useEffect } from 'react';
+import { useInteractionEffect } from './hooks';
 
 export default view(function InCallManagerDispatcher() {
 	const { intercom, offair } = useRootContext();
 	//
 	const connected = intercom.connected || offair.connected;
 	//
-	useEffect(() => {
-		if (connected) {
-			InCallManager.start().catch(console.error);
-			return () => InCallManager.stop();
-		}
-	}, [connected]);
+	useInteractionEffect(
+		() => connected && InCallManager.start().catch(console.error),
+		() => connected && InCallManager.stop(),
+		[connected],
+	);
 	//
 	return null;
 });

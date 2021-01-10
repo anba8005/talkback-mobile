@@ -1,26 +1,28 @@
 import { view } from '@risingstack/react-easy-state';
 import { useRootContext } from './RootContext';
-import { useEffect } from 'react';
 import ForegroundService from '../utils/ForegroundService';
+import DeviceInfo from '../utils/DeviceInfo';
+import { useInteractionEffect } from './hooks';
 
 const NOTIFICATION_CHANNEL_ID = 'talkback-mobile';
+
+if (DeviceInfo.isAndroid()) {
+	ForegroundService.createNotificationChannel({
+		id: NOTIFICATION_CHANNEL_ID,
+		name: 'Talkback channel',
+		description: 'Talkback channel description',
+		importance: 1,
+		enableVibration: false,
+	}).catch(console.error);
+}
 
 export default view(function ForegroundServiceDispatcher() {
 	const { intercom, offair } = useRootContext();
 	//
-	useEffect(() => {
-		ForegroundService.createNotificationChannel({
-			id: NOTIFICATION_CHANNEL_ID,
-			name: 'Talkback channel',
-			description: 'Talkback channel description',
-			importance: 1,
-			enableVibration: false,
-		}).catch(console.error);
-	});
-	//
 	const connected = intercom.connected || offair.connected;
-	useEffect(() => {
-		if (connected) {
+	useInteractionEffect(
+		() =>
+			connected &&
 			ForegroundService.startService({
 				channelId: NOTIFICATION_CHANNEL_ID,
 				id: 1,
@@ -29,12 +31,10 @@ export default view(function ForegroundServiceDispatcher() {
 				icon: '@mipmap/ic_launcher',
 				priority: 0,
 				killOnDestroy: true,
-			}).catch(console.error);
-			return () => {
-				ForegroundService.stopService().catch(console.error);
-			};
-		}
-	}, [connected]);
+			}).catch(console.error),
+		() => connected && ForegroundService.stopService().catch(console.error),
+		[connected],
+	);
 	//
 	return null;
 });

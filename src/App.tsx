@@ -18,14 +18,20 @@ import SettingsModal from './components/SettingsModal';
 // оперы/звуковики могут вызвать режиссера кнопкой колл, там ченить моргает в интерфейсе у режиссера :)
 // соответственно режисеру нужен особый режим (наверно при роомИД 0) , в котором он вручную выбирает румы
 
+//
+//
+//
+//
+
 const Content = view(() => {
 	const root = useRootContext();
+	//
+	const connected = root.isConnected();
 	//
 	const handleConnect = () => {
 		root.connect().catch(console.error);
 	};
 	//
-	const connected = root.isConnected();
 	if (connected === null) {
 		return <Connect onPress={handleConnect} />;
 	} else if (connected) {
