@@ -10,3 +10,7 @@
 # Add any project specific keep options here:
 
 -keep class org.webrtc.**  { *; }
+
+-keep class com.facebook.hermes.unicode.** { *; }
+
+-keep class com.facebook.jni.** { *; }

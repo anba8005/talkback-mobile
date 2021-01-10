@@ -10,9 +10,13 @@
 	},
 	"dependencies": {
 		"@risingstack/react-easy-state": "^6.3.0",
+		"appcenter": "4.0.2",
+		"appcenter-analytics": "4.0.2",
+		"appcenter-crashes": "4.0.2",
 		"janus-gateway-js": "anba8005/janus-gateway-js",
 		"react": "17.0.1",
 		"react-native": "0.64.0-rc.2",
+		"react-native-code-push": "^7.0.0",
 		"react-native-elements": "^3.1.0",
 		"react-native-incall-manager": "^3.3.0",
 		"react-native-modal": "^11.6.1",

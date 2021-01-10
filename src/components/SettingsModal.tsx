@@ -94,18 +94,15 @@ const SettingsContent = view(function SettingsContent() {
 	//
 	return (
 		<>
-			<Input placeholder="Server" value={url} onChangeText={setUrl} />
+			<Input
+				label="Server"
+				value={url}
+				onChangeText={setUrl}
+				autoFocus={true}
+			/>
 
-			<Input
-				placeholder="Intercom room"
-				value={roomId}
-				onChangeText={setRoomId}
-			/>
-			<Input
-				placeholder="Tally channel"
-				value={channel}
-				onChangeText={setChannel}
-			/>
+			<Input label="Intercom room" value={roomId} onChangeText={setRoomId} />
+			<Input label="Tally channel" value={channel} onChangeText={setChannel} />
 			<Toggle
 				title="Intercom enabled"
 				checked={intercom}
