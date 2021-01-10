@@ -11,6 +11,10 @@ import { SettingsFab } from './components/Controls';
 import PermissionManager from './utils/PermissionManager';
 import { CodePushManager } from './utils/CodePushManager';
 import SettingsModal from './components/SettingsModal';
+import InCallManagerDispatcher from './components/InCallManagerDispatcher';
+import AppActiveListener from './components/AppActiveListener';
+import DeviceInfo from './utils/DeviceInfo';
+import ForegroundServiceDispatcher from './components/ForegroundServiceDispatcher';
 
 // ПЛАН
 // каждый работник выбирает рум (общий рум оперов, общий рум звуковиков, секретный рум продюсера :), в нем слышат/говорят по толку
@@ -35,7 +39,14 @@ const Content = view(() => {
 	if (connected === null) {
 		return <Connect onPress={handleConnect} />;
 	} else if (connected) {
-		return <Root />;
+		return (
+			<>
+				<Root />
+				<InCallManagerDispatcher />
+				<AppActiveListener />
+				{DeviceInfo.isAndroid() && <ForegroundServiceDispatcher />}
+			</>
+		);
 	} else {
 		return <Error />;
 	}
