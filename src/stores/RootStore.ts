@@ -8,8 +8,9 @@ export class RootStore extends AbstractRootStore {
 		sessionService: SessionService,
 		audioBridgeService: AudioBridgeService,
 		streamingService: StreamingService,
+		tallyService: StreamingService,
 	) {
-		super(sessionService, audioBridgeService, streamingService);
+		super(sessionService, audioBridgeService, streamingService, tallyService);
 	}
 }
 
@@ -17,5 +18,11 @@ export function createRootStore(): RootStore {
 	const sessionService = new SessionService();
 	const audioBridgeService = new AudioBridgeService(sessionService);
 	const streamingService = new StreamingService(sessionService);
-	return new RootStore(sessionService, audioBridgeService, streamingService);
+	const tallyService = new StreamingService(sessionService);
+	return new RootStore(
+		sessionService,
+		audioBridgeService,
+		streamingService,
+		tallyService,
+	);
 }

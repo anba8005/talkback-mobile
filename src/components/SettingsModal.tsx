@@ -101,7 +101,7 @@ const SettingsContent = view(function SettingsContent() {
 				autoFocus={true}
 			/>
 
-			<Input label="Intercom room" value={roomId} onChangeText={setRoomId} />
+			<Input label="Intercom group" value={roomId} onChangeText={setRoomId} />
 			<Input label="Tally channel" value={channel} onChangeText={setChannel} />
 			<Toggle
 				title="Intercom enabled"
