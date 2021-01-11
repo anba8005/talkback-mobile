@@ -21,7 +21,7 @@ export default memo<TimedActivityIndicatorProps>(
 			return () => {
 				clearTimeout(t);
 			};
-		}, [setVisible]);
+		}, [setVisible, timeout]);
 		//
 		if (visible) {
 			return <ActivityIndicator {...props} />;

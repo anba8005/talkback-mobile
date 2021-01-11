@@ -37,7 +37,7 @@ export const DisconnectFab = memo(function DisconnectFab() {
 			type="material"
 			positionH="left"
 			positionV="bottom"
-			onPress={() => root.disconnect().catch(console.error)}
+			onPress={() => root.disconnect()}
 		/>
 	);
 });

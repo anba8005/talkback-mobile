@@ -20,7 +20,7 @@ export interface Root {
 	settings: SettingsStore;
 	hydrate: () => Promise<void>;
 	connect: () => Promise<void>;
-	disconnect: () => Promise<void>;
+	disconnect: () => void;
 	isConnected: () => boolean | null;
 }
 

@@ -6,7 +6,7 @@ import { useInteractionEffect } from './hooks';
 export default view(function InCallManagerDispatcher() {
 	const { intercom, offair } = useRootContext();
 	//
-	const connected = intercom.connected || offair.connected;
+	const connected = intercom.anyConnected || offair.connected;
 	//
 	useInteractionEffect(
 		() => connected && InCallManager.start().catch(console.error),

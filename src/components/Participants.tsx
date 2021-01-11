@@ -3,6 +3,7 @@ import { view } from '@risingstack/react-easy-state';
 import { useRootContext } from './RootContext';
 import { StyleSheet, View } from 'react-native';
 import { Badge, ThemeProps, withTheme } from 'react-native-elements';
+import { Participant } from '../common/services/AudioBridgeService';
 
 const BADGE_SIZE = 22;
 
@@ -59,18 +60,27 @@ function isSelf(c1: number, c2: number) {
 	return c1 > 0 && c1 === c2;
 }
 
+function notZeroChannel(participant: Participant) {
+	return participant.channel > 0;
+}
+
 export default view(function Participants() {
 	const { intercom, tally, settings } = useRootContext();
-	return (
-		<View style={styles.content}>
-			{intercom.participants.map((participant) => (
-				<Item
-					key={participant.id}
-					channel={participant.channel}
-					self={isSelf(settings.channel, participant.channel)}
-					active={tally.isActive(participant.channel)}
-				/>
-			))}
-		</View>
-	);
+	const group = intercom.activeGroup;
+	if (group) {
+		return (
+			<View style={styles.content}>
+				{group.participants.filter(notZeroChannel).map((participant) => (
+					<Item
+						key={participant.id}
+						channel={participant.channel}
+						self={isSelf(settings.channel, participant.channel)}
+						active={tally.isActive(participant.channel)}
+					/>
+				))}
+			</View>
+		);
+	} else {
+		return null;
+	}
 });

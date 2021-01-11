@@ -28,7 +28,7 @@ export default view(function Root() {
 			<View style={styles.content}>
 				{settings.offair && <OffairMuteFab />}
 				<DisconnectFab />
-				<Participants />
+				{!settings.multiRoom && <Participants />}
 				<Intercom />
 				<Offair />
 			</View>

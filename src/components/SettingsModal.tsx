@@ -10,6 +10,11 @@ import {
 import { useRootContext } from './RootContext';
 import { view } from '@risingstack/react-easy-state';
 import { Button, CheckBox, Input } from 'react-native-elements';
+import {
+	isNumberInRange,
+	isPositiveOrZeroNumber,
+} from '../common/utils/Helpers';
+import { MAX_NUM_GROUPS } from '../common/stores/IntercomStore';
 
 export const MAX_WIDTH = 500;
 
@@ -30,6 +35,9 @@ const styles = StyleSheet.create({
 		borderRadius: 10,
 		overflow: 'hidden',
 		backgroundColor: 'white',
+	},
+	error: {
+		color: 'red',
 	},
 });
 
@@ -66,7 +74,9 @@ const SettingsContent = view(function SettingsContent() {
 	const [intercom, setIntercom] = useState<boolean>(settings.intercom);
 	const [offair, setOffair] = useState<boolean>(settings.offair);
 	const [aec, setAec] = useState<boolean>(settings.aec);
-	//
+	const [numGroups, setNumGroups] = useState<string>(
+		String(settings.numGroups),
+	);
 	//
 	const handleSave = () => {
 		root.settings.applySettings(
@@ -76,24 +86,27 @@ const SettingsContent = view(function SettingsContent() {
 			intercom,
 			offair,
 			aec,
+			Number(numGroups),
 		);
 		root.settings.setDialogOpen(false);
 		//
 		if (root.isConnected() !== null) {
 			// connected or error
-			root
-				.disconnect()
-				.then(() => {
-					setTimeout(() => {
-						root
-							.hydrate()
-							.then(() => root.connect())
-							.catch(console.error);
-					}, 1000);
-				})
-				.catch(console.error);
+			root.disconnect();
+			setTimeout(() => {
+				root
+					.hydrate()
+					.then(() => root.connect())
+					.catch(console.error);
+			}, 1000);
 		}
 	};
+	//
+	const hasError =
+		url === '' ||
+		!isNumberInRange(roomId, 0, MAX_NUM_GROUPS) ||
+		!isPositiveOrZeroNumber(channel) ||
+		!isNumberInRange(numGroups, 1, 8);
 	//
 	return (
 		<>
@@ -101,11 +114,27 @@ const SettingsContent = view(function SettingsContent() {
 				label="Server"
 				value={url}
 				onChangeText={setUrl}
+				errorStyle={styles.error}
+				errorMessage={url === '' ? 'Required' : undefined}
 				autoFocus={true}
 			/>
 
-			<Input label="Intercom group" value={roomId} onChangeText={setRoomId} />
-			<Input label="Tally channel" value={channel} onChangeText={setChannel} />
+			<Input
+				label="Intercom group (0-8)"
+				value={roomId}
+				onChangeText={setRoomId}
+				errorStyle={styles.error}
+				errorMessage={
+					!isNumberInRange(roomId, 0, MAX_NUM_GROUPS) ? 'Invalid' : undefined
+				}
+			/>
+			<Input
+				label="Tally channel"
+				value={channel}
+				onChangeText={setChannel}
+				errorStyle={styles.error}
+				errorMessage={!isPositiveOrZeroNumber(channel) ? 'Invalid' : undefined}
+			/>
 			<Toggle
 				title="Intercom enabled"
 				checked={intercom}
@@ -117,7 +146,14 @@ const SettingsContent = view(function SettingsContent() {
 				onCheck={setOffair}
 			/>
 			<Toggle title="Echo cancellation" checked={aec} onCheck={setAec} />
-			<Button title="Save" onPress={handleSave} />
+			<Input
+				label="Max intercom groups (1-8)"
+				value={numGroups}
+				onChangeText={setNumGroups}
+				errorStyle={styles.error}
+				errorMessage={!isNumberInRange(numGroups, 1, 8) ? 'Invalid' : undefined}
+			/>
+			<Button title="Save" onPress={handleSave} disabled={hasError} />
 		</>
 	);
 });

@@ -7,9 +7,9 @@ import {
 
 registerGlobals();
 
-export type RTCPeerConnection = PC;
-export type MediaStream = MS;
-export type RTCDataChannel = any;
+export type CRTCPeerConnection = PC;
+export type CMediaStream = MS;
+export type CRTCDataChannel = any;
 export const getUserMedia = (constraints: any) => {
 	return mediaDevices.getUserMedia(constraints);
 };
