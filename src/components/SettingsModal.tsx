@@ -93,12 +93,7 @@ const SettingsContent = view(function SettingsContent() {
 		if (root.isConnected() !== null) {
 			// connected or error
 			root.disconnect();
-			setTimeout(() => {
-				root
-					.hydrate()
-					.then(() => root.connect())
-					.catch(console.error);
-			}, 1000);
+			setTimeout(() => root.connect().catch(console.error), 1000);
 		}
 	};
 	//

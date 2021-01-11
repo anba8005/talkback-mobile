@@ -37,6 +37,7 @@ export default withTheme(
 				group.stop();
 			} else if (group.muted) {
 				group.start();
+				group.setMuted(false);
 			} else {
 				group.setTalk(true);
 			}
