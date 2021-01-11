@@ -1,11 +1,11 @@
 import { view } from '@risingstack/react-easy-state';
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
+import { DeviceEventEmitter } from 'react-native';
 import { ThemeProps, withTheme } from 'react-native-elements';
 import { hexToRGB } from '../common/utils/Helpers';
+import NativeUtility, { MEDIA_BUTTON_EVENT_NAME } from '../utils/NativeUtility';
 import Fab from './Fab';
 import { useRootContext } from './RootContext';
-
-function noop() {}
 
 interface TalkButtonProps extends ThemeProps<{}> {}
 
@@ -13,14 +13,42 @@ export default withTheme(
 	view(function TalkButton({ theme }: TalkButtonProps) {
 		const { intercom } = useRootContext();
 		const group = intercom.activeGroup;
+		// handle media button
+		const handleMediaButtonPress = useCallback(
+			(event) => {
+				console.log(event);
+				if (event.eventText === 'KEYCODE_MEDIA_PLAY') {
+					group?.setMuted(false);
+					group?.setTalk(true);
+				} else if (event.eventText === 'KEYCODE_MEDIA_PAUSE') {
+					group?.setTalk(false);
+				}
+			},
+			[group],
+		);
+		// subscribe/unsubscribe mediabutton event
+		useEffect(() => {
+			NativeUtility.startMediaSession();
+			DeviceEventEmitter.addListener(
+				MEDIA_BUTTON_EVENT_NAME,
+				handleMediaButtonPress,
+			);
+			return () => {
+				DeviceEventEmitter.removeListener(
+					MEDIA_BUTTON_EVENT_NAME,
+					handleMediaButtonPress,
+				);
+				NativeUtility.stopMediaSession();
+			};
+		}, [handleMediaButtonPress]);
 		//
-		const handleTalkOn = useCallback(() => {
-			group?.setMuted(false);
-			group?.setTalk(true);
-		}, [group]);
-		//
-		const handleTalkOff = useCallback(() => {
-			group?.setTalk(false);
+		const handleTalkPress = useCallback(() => {
+			if (group?.talk) {
+				group?.setTalk(false);
+			} else {
+				group?.setMuted(false);
+				group?.setTalk(true);
+			}
 		}, [group]);
 		//
 		if (group) {
@@ -55,9 +83,7 @@ export default withTheme(
 					color={color}
 					positionH="center"
 					positionV="center"
-					onPressIn={handleTalkOn}
-					onPressOut={handleTalkOff}
-					onPress={noop}
+					onPress={handleTalkPress}
 				/>
 			);
 		} else {
