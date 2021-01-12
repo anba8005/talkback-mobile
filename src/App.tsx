@@ -14,7 +14,7 @@ import SettingsModal from './components/SettingsModal';
 import InCallManagerDispatcher from './components/InCallManagerDispatcher';
 import AppActiveListener from './components/AppActiveListener';
 import DeviceInfo from './utils/DeviceInfo';
-import ForegroundServiceDispatcher from './components/ForegroundServiceDispatcher';
+import ForegroundServiceDispatcher from './components/MediaSessionDispatcher';
 
 // ПЛАН
 // +каждый работник выбирает рум (общий рум оперов, общий рум звуковиков, секретный рум продюсера :), в нем слышат/говорят по толку

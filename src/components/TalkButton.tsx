@@ -3,7 +3,7 @@ import React, { useCallback, useEffect } from 'react';
 import { DeviceEventEmitter } from 'react-native';
 import { ThemeProps, withTheme } from 'react-native-elements';
 import { hexToRGB } from '../common/utils/Helpers';
-import NativeUtility, { MEDIA_BUTTON_EVENT_NAME } from '../utils/NativeUtility';
+import { MEDIA_BUTTON_EVENT_NAME } from '../utils/NativeUtility';
 import Fab from './Fab';
 import { useRootContext } from './RootContext';
 
@@ -28,7 +28,6 @@ export default withTheme(
 		);
 		// subscribe/unsubscribe mediabutton event
 		useEffect(() => {
-			NativeUtility.startMediaSession();
 			DeviceEventEmitter.addListener(
 				MEDIA_BUTTON_EVENT_NAME,
 				handleMediaButtonPress,
@@ -38,7 +37,6 @@ export default withTheme(
 					MEDIA_BUTTON_EVENT_NAME,
 					handleMediaButtonPress,
 				);
-				NativeUtility.stopMediaSession();
 			};
 		}, [handleMediaButtonPress]);
 		//

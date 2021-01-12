@@ -2,7 +2,7 @@
  * Copyright (c) 2011-2019, Zingaya, Inc. All rights reserved.
  */
 
-package com.talkback.foregroundservice;
+package com.talkback;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -16,13 +16,14 @@ import android.util.Log;
 
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReadableMap;
-import com.talkback.MainActivity;
 
 import static android.app.NotificationManager.INTERRUPTION_FILTER_NONE;
-import static com.talkback.foregroundservice.Constants.ERROR_ANDROID_VERSION;
-import static com.talkback.foregroundservice.Constants.ERROR_INVALID_CONFIG;
 
 class NotificationHelper {
+    static final String ERROR_INVALID_CONFIG = "ERROR_INVALID_CONFIG";
+    static final String ERROR_SERVICE_ERROR = "ERROR_SERVICE_ERROR";
+    static final String ERROR_ANDROID_VERSION = "ERROR_ANDROID_VERSION";
+
     private static NotificationHelper instance = null;
     private NotificationManager mNotificationManager;
     private Integer mLastInterruptionFilter;
@@ -77,14 +78,11 @@ class NotificationHelper {
         }
     }
 
-    Notification buildNotification(Context context, Bundle notificationConfig) {
+    Notification buildNotification(Context context, PendingIntent pendingIntent, ReadableMap notificationConfig) {
         if (notificationConfig == null) {
             Log.e("NotificationHelper", "buildNotification: invalid config");
             return null;
         }
-
-        Intent notificationIntent = new Intent(context, MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
 
         Notification.Builder notificationBuilder;
 
@@ -99,7 +97,7 @@ class NotificationHelper {
             notificationBuilder = new Notification.Builder(context);
         }
 
-        int priorityInt = notificationConfig.containsKey("priority") ? notificationConfig.getInt("priority"): Notification.PRIORITY_HIGH;
+        int priorityInt = notificationConfig.hasKey("priority") ? notificationConfig.getInt("priority"): Notification.PRIORITY_HIGH;
 
         int priority;
         switch (priorityInt) {
@@ -111,9 +109,6 @@ class NotificationHelper {
                 break;
             case -2:
                 priority = Notification.PRIORITY_MIN;
-                break;
-            case 1:
-                priority = Notification.PRIORITY_HIGH;
                 break;
             case 2:
                 priority = Notification.PRIORITY_MAX;

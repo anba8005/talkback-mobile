@@ -1,5 +1,6 @@
 package com.talkback;
 
+import android.app.Notification;
 import android.content.Intent;
 import android.media.AudioFormat;
 import android.media.AudioManager;
@@ -12,25 +13,34 @@ import android.util.Log;
 import android.view.KeyEvent;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.NotificationManagerCompat;
 
 import com.facebook.react.bridge.Arguments;
+import com.facebook.react.bridge.LifecycleEventListener;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
+import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
+import com.talkback.NotificationHelper;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class UtilityModule extends ReactContextBaseJavaModule {
+import static com.talkback.NotificationHelper.ERROR_INVALID_CONFIG;
+
+public class UtilityModule extends ReactContextBaseJavaModule implements LifecycleEventListener {
     private MediaSession ms;
 
     UtilityModule(ReactApplicationContext reactContext) {
         super(reactContext);
+        reactContext.addLifecycleEventListener(this);
     }
+
+
 
     @NonNull
     @Override
@@ -44,33 +54,38 @@ public class UtilityModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void startMediaSession() {
+    public void startMediaSession(ReadableMap notificationConfig,Promise promise) {
         stopMediaSession();
         try {
-            Log.e("MEDIASESSION", "Starting session");
             createMediaSession();
+            showNotification(notificationConfig);
+            Log.i("MediaSession", "STARTED");
+            promise.resolve(null);
         } catch (InterruptedException e) {
             e.printStackTrace();
+            promise.reject(e);
         }
     }
 
     @ReactMethod
     public void stopMediaSession() {
         if (ms != null) {
-            Log.e("MEDIASESSION", "Stopping session");
+            hideNotification();
             ms.setActive(false);
             ms.release();
             ms = null;
+            Log.i("MediaSession", "STOPPED");
         }
     }
 
     private void createMediaSession() throws InterruptedException {
         ms = new MediaSession(getReactApplicationContext(), getReactApplicationContext().getPackageName());
         ms.setActive(true);
+        //
         ms.setCallback(new MediaSession.Callback() {
             @Override
             public boolean onMediaButtonEvent(Intent mediaButtonIntent) {
-                KeyEvent event = (KeyEvent)mediaButtonIntent.getParcelableExtra(Intent.EXTRA_KEY_EVENT);
+                KeyEvent event = (KeyEvent) mediaButtonIntent.getParcelableExtra(Intent.EXTRA_KEY_EVENT);
                 if (event.getAction() == KeyEvent.ACTION_DOWN) {
                     int keyCode = event.getKeyCode();
                     String keyText = "";
@@ -106,7 +121,7 @@ public class UtilityModule extends ReactContextBaseJavaModule {
                             keyText = "KEYCODE_UNKNOW";
                             break;
                     }
-                    Log.e("MEDIASESSION", keyText + " -> " + keyCode);
+                    Log.i("MEDIASESSION", keyText + " -> " + keyCode);
                     WritableMap data = Arguments.createMap();
                     data.putString("eventText", keyText);
                     data.putInt("eventCode", keyCode);
@@ -117,15 +132,42 @@ public class UtilityModule extends ReactContextBaseJavaModule {
                 return true;
             }
         });
-
-        // play dummy audio
-//        AudioTrack at = new AudioTrack(AudioManager.STREAM_MUSIC, 48000, AudioFormat.CHANNEL_OUT_STEREO, AudioFormat.ENCODING_PCM_16BIT,
-//                AudioTrack.getMinBufferSize(48000, AudioFormat.CHANNEL_OUT_STEREO, AudioFormat.ENCODING_PCM_16BIT), AudioTrack.MODE_STREAM);
-//        at.play();
-//
-//        // a little sleep
-//        at.stop();
-//        at.release();
     }
 
+    @ReactMethod
+    public void createNotificationChannel(ReadableMap channelConfig, Promise promise) {
+        if (channelConfig == null) {
+            promise.reject(ERROR_INVALID_CONFIG, "ForegroundService: Channel config is invalid");
+            return;
+        }
+        NotificationHelper.getInstance(getReactApplicationContext()).createNotificationChannel(channelConfig, promise);
+    }
+
+    private void showNotification(ReadableMap notificationConfig) {
+        if (notificationConfig != null) {
+            Notification notification = NotificationHelper.getInstance(getReactApplicationContext())
+                    .buildNotification(getReactApplicationContext(), ms.getController().getSessionActivity(), notificationConfig);
+            NotificationManagerCompat.from(getReactApplicationContext()).notify(1,notification);
+        }
+    }
+
+    private void hideNotification() {
+        NotificationManagerCompat.from(getReactApplicationContext()).cancel(1);
+    }
+
+    @Override
+    public void onHostResume() {
+        //
+    }
+
+    @Override
+    public void onHostPause() {
+        //
+    }
+
+    @Override
+    public void onHostDestroy() {
+        stopMediaSession();
+        Log.i("MediaSession", "DESTROYED");
+    }
 }
