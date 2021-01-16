@@ -5,14 +5,13 @@ export interface NotificationConfig {
 	title: string; // Notification title
 	text: string; // Notification text
 	icon: string; // Small icon name
-	priority: -2 | -1 | 0 | 1 | 2; // Priority of this notification
 }
 
 export interface NotificationChannelConfig {
 	id: string; // Unique channel ID
 	name: string; // Notification channel name
 	description: string; // Notification channel description
-	importance: 1 | 2 | 3 | 4 | 5; // Notification channel importance. One of: min low default high max
+	importance?: 1 | 2 | 3 | 4 | 5; // Notification channel importance. One of: min low default high max
 	enableVibration: boolean; // Whether notification posted to this channel should vibrate
 }
 

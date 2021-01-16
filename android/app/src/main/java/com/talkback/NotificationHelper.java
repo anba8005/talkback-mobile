@@ -62,7 +62,7 @@ class NotificationHelper {
             String channelName = channelConfig.getString("name");
             String channelDescription = channelConfig.getString("description");
             int channelImportance = channelConfig.hasKey("importance") ?
-                    channelConfig.getInt("importance") : NotificationManager.IMPORTANCE_LOW;
+                    channelConfig.getInt("importance") : NotificationManager.IMPORTANCE_DEFAULT;
             boolean enableVibration = channelConfig.hasKey("enableVibration") && channelConfig.getBoolean("enableVibration");
             if (channelId == null || channelName == null) {
                 promise.reject(ERROR_INVALID_CONFIG, "VIForegroundService: Channel id or name is not specified");
@@ -97,31 +97,9 @@ class NotificationHelper {
             notificationBuilder = new Notification.Builder(context);
         }
 
-        int priorityInt = notificationConfig.hasKey("priority") ? notificationConfig.getInt("priority"): Notification.PRIORITY_HIGH;
-
-        int priority;
-        switch (priorityInt) {
-            case 0:
-                priority = Notification.PRIORITY_DEFAULT;
-                break;
-            case -1:
-                priority = Notification.PRIORITY_LOW;
-                break;
-            case -2:
-                priority = Notification.PRIORITY_MIN;
-                break;
-            case 2:
-                priority = Notification.PRIORITY_MAX;
-                break;
-            default:
-                priority = Notification.PRIORITY_HIGH;
-                break;
-
-        }
-
         notificationBuilder.setContentTitle(notificationConfig.getString("title"))
                 .setContentText(notificationConfig.getString("text"))
-                .setPriority(priority)
+                .setOngoing(true)
                 .setContentIntent(pendingIntent);
 
         String iconName = notificationConfig.getString("icon");

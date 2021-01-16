@@ -11,7 +11,6 @@ if (DeviceInfo.isAndroid()) {
 		id: NOTIFICATION_CHANNEL_ID,
 		name: 'Talkback channel',
 		description: 'Talkback channel description',
-		importance: 1,
 		enableVibration: false,
 	}).catch(console.error);
 }
@@ -29,7 +28,6 @@ export default view(function MediaSessionDispatcher() {
 					title: 'Talkback is running',
 					text: 'Touch to return to the app',
 					icon: '@mipmap/ic_launcher',
-					priority: 0,
 				}).catch(console.error);
 			}
 		},
