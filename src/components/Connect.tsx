@@ -1,8 +1,9 @@
 import { view } from '@risingstack/react-easy-state';
-import React from 'react';
+import React, { useCallback } from 'react';
 import { SafeAreaView, StyleSheet, View } from 'react-native';
-import { Theme, withTheme } from 'react-native-elements';
+import { withTheme } from 'react-native-elements';
 import Fab from './Fab';
+import { useRootContext } from './RootContext';
 
 const styles = StyleSheet.create({
 	safe: {
@@ -21,12 +22,14 @@ const styles = StyleSheet.create({
 	},
 });
 
-interface ConnectProps extends Theme<{}> {
-	onPress: () => void;
-}
-
 export default withTheme(
-	view(function Connect({ onPress }: ConnectProps) {
+	view(function Connect() {
+		const root = useRootContext();
+		//
+		const handleConnect = useCallback(() => {
+			root.connect().catch(console.error);
+		}, [root]);
+		//
 		return (
 			<SafeAreaView style={styles.safe}>
 				<View style={styles.content} key="fullscreenView">
@@ -37,7 +40,7 @@ export default withTheme(
 						type="material"
 						positionH="center"
 						positionV="center"
-						onPress={onPress}
+						onPress={handleConnect}
 					/>
 				</View>
 			</SafeAreaView>

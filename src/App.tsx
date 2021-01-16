@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react';
 import { BackHandler } from 'react-native';
 import { ThemeProvider } from 'react-native-elements';
 import Root from './components/Root';
-import Error from './components/Error';
 import { RootContextProvider, useRootContext } from './components/RootContext';
 import Logger from './utils/Logger';
 import Connect from './components/Connect';
@@ -15,6 +14,9 @@ import InCallManagerDispatcher from './components/InCallManagerDispatcher';
 import AppActiveListener from './components/AppActiveListener';
 import DeviceInfo from './utils/DeviceInfo';
 import ForegroundServiceDispatcher from './components/MediaSessionDispatcher';
+import { RootSiblingParent } from 'react-native-root-siblings';
+import Notifier from './components/Notifier';
+import JanusErrorListener from './components/JanusErrorListener';
 
 // ПЛАН
 // +каждый работник выбирает рум (общий рум оперов, общий рум звуковиков, секретный рум продюсера :), в нем слышат/говорят по толку
@@ -29,26 +31,18 @@ import ForegroundServiceDispatcher from './components/MediaSessionDispatcher';
 
 const Content = view(() => {
 	const root = useRootContext();
-	//
-	const connected = root.isConnected();
-	//
-	const handleConnect = () => {
-		root.connect().catch(console.error);
-	};
-	//
-	if (connected === null) {
-		return <Connect onPress={handleConnect} />;
-	} else if (connected) {
+	if (root.isConnected()) {
 		return (
 			<>
 				<Root />
 				<InCallManagerDispatcher />
 				<AppActiveListener />
+				<JanusErrorListener />
 				{DeviceInfo.isAndroid() && <ForegroundServiceDispatcher />}
 			</>
 		);
 	} else {
-		return <Error />;
+		return <Connect />;
 	}
 });
 
@@ -70,11 +64,14 @@ const App = () => {
 	if (init) {
 		return (
 			<ThemeProvider>
-				<RootContextProvider>
-					<SettingsModal />
-					<Content />
-					<SettingsFab />
-				</RootContextProvider>
+				<RootSiblingParent>
+					<RootContextProvider>
+						<SettingsModal />
+						<Content />
+						<SettingsFab />
+						<Notifier />
+					</RootContextProvider>
+				</RootSiblingParent>
 			</ThemeProvider>
 		);
 	} else {
