@@ -174,27 +174,6 @@ android {
         }
     }
 
-	def taskName = getGradle().getStartParameter().getTaskRequests().toString()
-
-    packagingOptions {
-        pickFirst "lib/armeabi-v7a/libc++_shared.so"
-        pickFirst "lib/arm64-v8a/libc++_shared.so"
-        pickFirst "lib/x86/libc++_shared.so"
-        pickFirst "lib/x86_64/libc++_shared.so"
-        // For Hermes, delete all the libjsc* files
-        exclude "**/libjsc*.so"
-        if (taskName.contains("Debug")) {
-            // Release libs take precedence and must be removed
-            // to allow debugging
-			exclude '**/libhermes-executor-common-release.so'
-            exclude '**/libhermes-executor-release.so'
-        } else {
-            // Reduce size by deleting the debugger/inspector
-            exclude '**/libhermes-inspector.so'
-			exclude '**/libhermes-executor-common-debug.so'
-            exclude '**/libhermes-executor-debug.so'
-        }
-    }
 
     // applicationVariants are e.g. debug, release
     applicationVariants.all { variant ->

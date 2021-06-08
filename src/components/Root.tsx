@@ -27,10 +27,10 @@ export default view(function Root() {
 		<SafeAreaView style={styles.safe}>
 			<View style={styles.content}>
 				{settings.offair && <OffairMuteFab />}
-				<DisconnectFab />
 				{!settings.multiRoom && <Participants />}
 				<Intercom />
 				<Offair />
+				<DisconnectFab />
 			</View>
 		</SafeAreaView>
 	);
