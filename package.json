@@ -22,7 +22,7 @@
 		"appcenter-crashes": "^4.1.0",
 		"janus-gateway-js": "anba8005/janus-gateway-js",
 		"react": "17.0.1",
-		"react-native": "0.64.1",
+		"react-native": "^0.64.2",
 		"react-native-code-push": "^7.0.1",
 		"react-native-elements": "^3.4.1",
 		"react-native-incall-manager": "^3.3.0",
