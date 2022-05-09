@@ -7,6 +7,12 @@ import App from './src/App';
 import { name as appName } from './app.json';
 import CodePush from 'react-native-code-push';
 import { CodePushManager } from './src/utils/CodePushManager';
+import { LogBox } from 'react-native';
+
+LogBox.ignoreLogs([
+	'ViewPropTypes will be removed',
+	'ColorPropType will be removed',
+]);
 
 // disable codepush restarts (enable after permission request)
 CodePushManager.disableRestart();
