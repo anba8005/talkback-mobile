@@ -1,11 +1,16 @@
 import { view } from '@risingstack/react-easy-state';
-import { useCallback } from 'react';
+import { useCallback, useRef } from 'react';
 import { useInteractionEffect } from './hooks';
-import { AppStateStatus, AppState } from 'react-native';
+import {
+	AppStateStatus,
+	AppState,
+	NativeEventSubscription,
+} from 'react-native';
 import { useRootContext } from './RootContext';
 
 export default view(function AppActiveListener() {
 	const { offair } = useRootContext();
+	const listener = useRef<NativeEventSubscription>();
 	//
 	const handleAppStateChange = useCallback(
 		(nextAppState: AppStateStatus) => {
@@ -20,8 +25,18 @@ export default view(function AppActiveListener() {
 	);
 	//
 	useInteractionEffect(
-		() => AppState.addEventListener('change', handleAppStateChange),
-		() => AppState.removeEventListener('change', handleAppStateChange),
+		() => {
+			listener.current = AppState.addEventListener(
+				'change',
+				handleAppStateChange,
+			);
+		},
+		() => {
+			if (listener.current) {
+				listener.current.remove();
+				listener.current = undefined;
+			}
+		},
 		[handleAppStateChange],
 	);
 	//

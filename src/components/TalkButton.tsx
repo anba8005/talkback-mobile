@@ -1,6 +1,6 @@
 import { view } from '@risingstack/react-easy-state';
-import React, { useCallback, useEffect } from 'react';
-import { DeviceEventEmitter } from 'react-native';
+import React, { useCallback, useEffect, useRef } from 'react';
+import { DeviceEventEmitter, EmitterSubscription } from 'react-native';
 import { ThemeProps, withTheme } from 'react-native-elements';
 import { hexToRGB } from '../common/utils/Helpers';
 import { MEDIA_BUTTON_EVENT_NAME } from '../utils/NativeUtility';
@@ -13,6 +13,7 @@ export default withTheme(
 	view(function TalkButton({ theme }: TalkButtonProps) {
 		const { intercom } = useRootContext();
 		const group = intercom.activeGroup;
+		const listener = useRef<EmitterSubscription>();
 		// handle media button
 		const handleMediaButtonPress = useCallback(
 			(event) => {
@@ -28,15 +29,15 @@ export default withTheme(
 		);
 		// subscribe/unsubscribe mediabutton event
 		useEffect(() => {
-			DeviceEventEmitter.addListener(
+			listener.current = DeviceEventEmitter.addListener(
 				MEDIA_BUTTON_EVENT_NAME,
 				handleMediaButtonPress,
 			);
 			return () => {
-				DeviceEventEmitter.removeListener(
-					MEDIA_BUTTON_EVENT_NAME,
-					handleMediaButtonPress,
-				);
+				if (listener.current) {
+					listener.current.remove();
+					listener.current = undefined;
+				}
 			};
 		}, [handleMediaButtonPress]);
 		//
@@ -88,4 +89,5 @@ export default withTheme(
 			return null;
 		}
 	}),
+	'',
 );
