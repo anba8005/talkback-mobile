@@ -11,7 +11,7 @@
 		"start": "react-native start",
 		"clean": "react-native-clean-project",
 		"postversion": "react-native-version",
-		"release-staging": "appcenter codepush release-react -a anba8005/talkback-android -d Staging -m && appcenter codepush release-react -a anba8005/talkback-ios -d Staging -m",
+		"release-staging": "appcenter codepush release-react -a anba8005/talkback-android -d Staging -m",
 		"analyze": "react-native-bundle-visualizer"
 	},
 	"dependencies": {
