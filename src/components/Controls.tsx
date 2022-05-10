@@ -2,6 +2,7 @@ import React, { memo } from 'react';
 import { view } from '@risingstack/react-easy-state';
 import { useRootContext } from './RootContext';
 import Fab from './Fab';
+import NativeUtility from '../utils/NativeUtility';
 
 export const OffairMuteFab = view(function OffairMuteFab() {
 	const { offair } = useRootContext();
@@ -38,6 +39,18 @@ export const DisconnectFab = memo(function DisconnectFab() {
 			positionH="left"
 			positionV="bottom"
 			onPress={() => root.disconnect()}
+		/>
+	);
+});
+
+export const ExitFab = memo(function ExitFab() {
+	return (
+		<Fab
+			icon="exit-to-app"
+			type="material"
+			positionH="left"
+			positionV="bottom"
+			onPress={() => NativeUtility.exitApp()}
 		/>
 	);
 });

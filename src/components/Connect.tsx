@@ -1,6 +1,7 @@
 import { view } from '@risingstack/react-easy-state';
 import React, { useCallback } from 'react';
 import { SafeAreaView, StyleSheet, View } from 'react-native';
+import { ExitFab } from './Controls';
 import Fab from './Fab';
 import { useRootContext } from './RootContext';
 
@@ -42,6 +43,7 @@ export default view(function Connect() {
 					positionV="center"
 					onPress={handleConnect}
 				/>
+				<ExitFab />
 			</View>
 		</SafeAreaView>
 	);
