@@ -17,6 +17,7 @@ import ForegroundServiceDispatcher from './components/MediaSessionDispatcher';
 import { RootSiblingParent } from 'react-native-root-siblings';
 import Notifier from './components/Notifier';
 import JanusErrorListener from './components/JanusErrorListener';
+import Orientation from 'react-native-orientation-locker';
 
 // ПЛАН
 // +каждый работник выбирает рум (общий рум оперов, общий рум звуковиков, секретный рум продюсера :), в нем слышат/говорят по толку
@@ -57,6 +58,7 @@ const App = () => {
 	//
 	useEffect(() => {
 		StatusBar.setHidden(true);
+		Orientation.lockToLandscape();
 		PermissionManager.requestPermissions()
 			.then(() => CodePushManager.enableRestart())
 			.then(() => setInit(true));
