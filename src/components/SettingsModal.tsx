@@ -177,7 +177,7 @@ export default view(function SettingsModal() {
 		>
 			<SafeAreaView style={styles.view}>
 				<View style={styles.radius}>
-					<ScrollView stickyHeaderIndices={[0]}>
+					<ScrollView>
 						<SettingsContent />
 					</ScrollView>
 				</View>
