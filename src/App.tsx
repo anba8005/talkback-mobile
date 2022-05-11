@@ -1,6 +1,6 @@
 import { view } from '@risingstack/react-easy-state';
 import React, { useState, useEffect } from 'react';
-import { BackHandler } from 'react-native';
+import { BackHandler, StatusBar } from 'react-native';
 import { ThemeProvider } from 'react-native-elements';
 import Root from './components/Root';
 import { RootContextProvider, useRootContext } from './components/RootContext';
@@ -56,6 +56,7 @@ const App = () => {
 	const [init, setInit] = useState(false);
 	//
 	useEffect(() => {
+		StatusBar.setHidden(true);
 		PermissionManager.requestPermissions()
 			.then(() => CodePushManager.enableRestart())
 			.then(() => setInit(true));
