@@ -25,7 +25,13 @@ export default memo<StreamingVideoProps>(function StreamingVideo({
 	} else {
 		return (
 			<View style={StyleSheet.flatten([style, styles.center])}>
-				<Icon name="videocam-off" type="material" color="#FFFFFF" size={60} />
+				<Icon
+					name="videocam-off"
+					type="material"
+					color="#FFFFFF"
+					size={60}
+					tvParallaxProperties={undefined}
+				/>
 			</View>
 		);
 	}

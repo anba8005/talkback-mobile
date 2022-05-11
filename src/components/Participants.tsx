@@ -2,8 +2,9 @@ import React, { memo } from 'react';
 import { view } from '@risingstack/react-easy-state';
 import { useRootContext } from './RootContext';
 import { StyleSheet, View } from 'react-native';
-import { Badge, ThemeProps, withTheme } from 'react-native-elements';
+import { Badge } from 'react-native-elements';
 import { Participant } from '../common/services/AudioBridgeService';
+import { colors } from './constants';
 
 const BADGE_SIZE = 22;
 
@@ -19,7 +20,7 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 	},
 	badgeContainer: {
-		margin: 2,
+		margin: 10,
 	},
 	badge: {
 		minWidth: BADGE_SIZE,
@@ -31,30 +32,24 @@ const styles = StyleSheet.create({
 	},
 });
 
-interface ItemProps extends ThemeProps<{}> {
+interface ItemProps {
 	channel: number;
 	self: boolean;
 	active: boolean;
 }
 
-const Item = withTheme(
-	memo<ItemProps>(function Item({ channel, self, theme, active }) {
-		const color = active
-			? theme.colors?.error
-			: self
-			? theme.colors?.primary
-			: theme.colors?.grey0;
-		const label = !isNaN(channel) ? String(channel) : '?';
-		const colorStyle = { backgroundColor: color };
-		return (
-			<Badge
-				value={label}
-				badgeStyle={[styles.badge, colorStyle]}
-				containerStyle={styles.badgeContainer}
-			/>
-		);
-	}),
-);
+const Item = memo<ItemProps>(function Item({ channel, self, active }) {
+	const color = active ? colors.error : self ? colors.primary : colors.grey0;
+	const label = !isNaN(channel) ? String(channel) : '?';
+	const colorStyle = { backgroundColor: color };
+	return (
+		<Badge
+			value={label}
+			badgeStyle={[styles.badge, colorStyle]}
+			containerStyle={styles.badgeContainer}
+		/>
+	);
+});
 
 function isSelf(c1: number, c2: number) {
 	return c1 > 0 && c1 === c2;
