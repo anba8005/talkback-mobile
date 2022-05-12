@@ -10,6 +10,8 @@
 #import <AppCenterReactNativeCrashes.h>
 
 #import <CodePush/CodePush.h>
+#import "Orientation.h"
+
 #if RCT_NEW_ARCH_ENABLED
 #import <React/CoreModulesPlugins.h>
 #import <React/RCTCxxBridgeDelegate.h>
@@ -70,6 +72,10 @@
 #else
   return [CodePush bundleURL];
 #endif
+}
+
+- (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
+  return [Orientation getOrientation];
 }
 
 #if RCT_NEW_ARCH_ENABLED
