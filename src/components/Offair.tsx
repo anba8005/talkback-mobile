@@ -48,6 +48,6 @@ export default view(function Offair() {
 			</View>
 		);
 	} else {
-		return <View style={styles.fullscreen} />;
+		return <View style={[styles.fullscreen, styles.zi1]} />;
 	}
 });
