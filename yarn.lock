@@ -5276,6 +5276,11 @@ react-is@^16.13.1, react-is@^16.7.0:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
   integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
 
+react-native-android-wake-lock@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/react-native-android-wake-lock/-/react-native-android-wake-lock-1.1.0.tgz#78fb6fe379507c37bc6cef37f757097fa6969e4a"
+  integrity sha512-M1duQnqviJSo3KYl0EKsuYDfQR4Y6GX7exMnOW7CxVqX43y/Q4MwfU9olrFzCE9+0GvJqBoX76ijDCWKrOjT7Q==
+
 react-native-animatable@1.3.3:
   version "1.3.3"
   resolved "https://registry.yarnpkg.com/react-native-animatable/-/react-native-animatable-1.3.3.tgz#a13a4af8258e3bb14d0a9d839917e9bb9274ec8a"

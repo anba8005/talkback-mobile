@@ -23,6 +23,7 @@
 		"janus-gateway-js": "anba8005/janus-gateway-js",
 		"react": "17.0.2",
 		"react-native": "0.68.1",
+		"react-native-android-wake-lock": "^1.1.0",
 		"react-native-code-push": "^7.0.4",
 		"react-native-elements": "^3.4.2",
 		"react-native-incall-manager": "^3.3.0",
