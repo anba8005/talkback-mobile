@@ -8,6 +8,8 @@ import {
 } from 'react-native';
 import { useRootContext } from './RootContext';
 
+const monkeyPatch = require('../utils/MonkeyPatch').default;
+
 export default view(function AppActiveListener() {
 	const { offair } = useRootContext();
 	const listener = useRef<NativeEventSubscription>();
@@ -17,8 +19,10 @@ export default view(function AppActiveListener() {
 			console.log('state is ' + nextAppState);
 			if (nextAppState === 'active') {
 				offair.updateVisible(true);
+				monkeyPatch.unpatch();
 			} else {
 				offair.updateVisible(false);
+				monkeyPatch.patch();
 			}
 		},
 		[offair],
