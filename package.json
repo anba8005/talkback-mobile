@@ -1,6 +1,6 @@
 {
 	"name": "talkback",
-	"version": "1.2.5",
+	"version": "1.2.6",
 	"private": true,
 	"scripts": {
 		"android": "react-native run-android",
@@ -10,7 +10,7 @@
 		"ios-device-debug": "react-native run-ios --device",
 		"start": "react-native start",
 		"clean": "react-native-clean-project",
-		"postversion": "react-native-version",
+		"postversion": "react-native-version && git push origin v$npm_package_version && git push origin master",
 		"release-staging": "appcenter codepush release-react -a anba8005/talkback-android -d Staging -m && appcenter codepush release-react -a anba8005/talkback-ios -d Staging -m",
 		"analyze": "react-native-bundle-visualizer"
 	},
