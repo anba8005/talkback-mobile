@@ -1125,6 +1125,11 @@
   resolved "https://registry.yarnpkg.com/@types/prop-types/-/prop-types-15.7.5.tgz#5f19d2b85a98e9558036f6a3cacc8819420f05cf"
   integrity sha512-JCB8C6SnDoQf0cNycqd/35A7MjcnK+ZTqE7judS6o7utxUCg6imJg3QK2qzHKszlTjcj2cn+NwMB2i96ubpj7w==
 
+"@types/react-native-background-timer@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@types/react-native-background-timer/-/react-native-background-timer-2.0.0.tgz#c44c57f8fbca9d9d5521fdd72a8f55232b79381e"
+  integrity sha512-y5VW82dL/ESOLg+5QQHyBdsFVA4ZklENxmOyxv8o06T+3HBG2JOSuz/CIPz1vKdB7dmWDGPZNuPosdtnp+xv2A==
+
 "@types/react-native-vector-icons@^6.4.6":
   version "6.4.10"
   resolved "https://registry.yarnpkg.com/@types/react-native-vector-icons/-/react-native-vector-icons-6.4.10.tgz#9bfd6e64dd37b8119425496b5e53ff91d034efa9"
@@ -3795,8 +3800,8 @@ jake@^10.8.5:
     minimatch "^3.0.4"
 
 janus-gateway-js@anba8005/janus-gateway-js:
-  version "3.0.9"
-  resolved "https://codeload.github.com/anba8005/janus-gateway-js/tar.gz/73e1c2d001bbd876c95e965916d36f18a11cad85"
+  version "3.0.10"
+  resolved "https://codeload.github.com/anba8005/janus-gateway-js/tar.gz/10daf9dcb14a7367b0b9d511e9bb2f48db5dd7ae"
   dependencies:
     eventemitter2 "^2.1.3"
 
