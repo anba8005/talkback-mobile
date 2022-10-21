@@ -226,7 +226,7 @@ android {
         abi {
             reset()
             enable enableSeparateBuildPerCPUArchitecture
-            universalApk false  // If true, also generate a universal APK
+            universalApk System.getenv('UNIVERSAL_APK') ? true : false  // If true, also generate a universal APK
             include (*reactNativeArchitectures())
         }
     }
