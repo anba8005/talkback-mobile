@@ -8,7 +8,7 @@ let _started = false;
 async function start() {
 	CodePushManager.disableRestart();
 	await RNInCallManager.checkRecordPermission(); // ios earpeace bug workaround
-	RNInCallManager.start({ media: 'video' });
+	RNInCallManager.start({ media: 'audio' });
 	if (DeviceInfo.isAndroid()) {
 		WakeLockInterface.setWakeLock();
 	}
