@@ -1,6 +1,6 @@
 {
 	"name": "talkback",
-	"version": "1.2.7",
+	"version": "1.2.6",
 	"private": true,
 	"scripts": {
 		"android": "react-native run-android",
@@ -22,7 +22,7 @@
 		"appcenter-crashes": "^4.4.4",
 		"janus-gateway-js": "anba8005/janus-gateway-js",
 		"react": "17.0.2",
-		"react-native": "0.68.1",
+		"react-native": "0.68.5",
 		"react-native-android-wake-lock": "^1.1.0",
 		"react-native-background-timer": "^2.4.1",
 		"react-native-code-push": "^7.0.4",
